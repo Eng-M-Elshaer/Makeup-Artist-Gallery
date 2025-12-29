@@ -20,19 +20,19 @@ function listImagesIn(dir) {
 }
 
 function preferOnePerBase(files) {
-  const map = new Map(); // base -> best filename
+  const bestByBase = new Map(); // base -> { name, priority }
   for (const f of files) {
-    const ext = path.extname(f).toLowerCase();
-    const base = path.basename(f, ext);
-    const current = map.get(base);
-    if (!current) { map.set(base, f); continue; }
-    const curExt = path.extname(current).toLowerCase();
-    if (EXT_PRIORITY.indexOf(ext) < 0 || EXT_PRIORITY.indexOf(curExt) < 0) continue;
-    if (EXT_PRIORITY.indexOf(ext) <= EXT_PRIORITY.indexOf(curExt)) {
-      map.set(base, f);
+    const actualExt = path.extname(f);
+    const lowerExt = actualExt.toLowerCase();
+    const base = path.basename(f, actualExt).toLowerCase();
+    const pr = EXT_PRIORITY.indexOf(lowerExt);
+    if (pr < 0) continue;
+    const current = bestByBase.get(base);
+    if (!current || pr < current.priority) {
+      bestByBase.set(base, { name: f, priority: pr });
     }
   }
-  return Array.from(map.values());
+  return Array.from(bestByBase.values()).map((v) => v.name).sort();
 }
 
 function buildManifest() {
@@ -46,6 +46,7 @@ function buildManifest() {
     const absCat = path.join(GALLERY_ROOT, cat);
     const files = listImagesIn(absCat);
     const preferred = preferOnePerBase(files);
+    console.log(`[manifest] ${cat}: files=${files.length}, preferred=${preferred.length}`);
     manifest[cat] = preferred.map((f) => `gallery/${cat}/${f}`);
   }
 
