@@ -23,7 +23,7 @@ export default function Home() {
       </main>
 
       <a
-        href={`https://wa.me/201000000000?text=${whatsappMsg}`}
+        href={`https://wa.me/201100793335?text=${whatsappMsg}`}
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-4 inset-x-4 sm:inset-x-auto sm:right-4 sm:w-auto bg-green-600 text-white font-semibold py-3 rounded-full text-center shadow-lg"
