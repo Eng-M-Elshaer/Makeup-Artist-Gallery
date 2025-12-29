@@ -19,9 +19,9 @@ export const PLACEHOLDER =
 
 // أمثلة صور للتجربة - استبدل لاحقًا بصورك الحقيقية تحت public/gallery
 export const images: ImageItem[] = [
-  { id: 'z1', src: '/gallery/zafaf/z1.webp', alt: 'لوك زفاف 1', category: 'زفاف', featured: true },
-  { id: 'z2', src: '/gallery/zafaf/z2.webp', alt: 'لوك زفاف 2', category: 'زفاف' },
-  { id: 'k1', src: '/gallery/khotoba/k1.webp', alt: 'لوك خطوبة 1', category: 'خطوبة', featured: true },
-  { id: 'kk1', src: '/gallery/ketb-ketab/kk1.webp', alt: 'لوك كتب كتاب 1', category: 'كتب كتاب' },
-  { id: 's1', src: '/gallery/sawariya/s1.webp', alt: 'لوك سوارية 1', category: 'سوارية' },
+  { id: 'z1', src: 'gallery/zafaf/z1.webp', alt: 'لوك زفاف 1', category: 'زفاف', featured: true },
+  { id: 'z2', src: 'gallery/zafaf/z2.webp', alt: 'لوك زفاف 2', category: 'زفاف' },
+  { id: 'k1', src: 'gallery/khotoba/k1.webp', alt: 'لوك خطوبة 1', category: 'خطوبة', featured: true },
+  { id: 'kk1', src: 'gallery/ketb-ketab/kk1.webp', alt: 'لوك كتب كتاب 1', category: 'كتب كتاب' },
+  { id: 's1', src: 'gallery/sawariya/s1.webp', alt: 'لوك سوارية 1', category: 'سوارية' },
 ];

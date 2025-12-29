@@ -32,7 +32,7 @@ export default function FullScreenViewer({ items, index, onClose }: Props) {
           alt={items[curr].alt}
           className="max-h-[85vh] object-contain transition-transform"
           style={{ transform: `scale(${zoom})` }}
-          onError={(e) => ((e.currentTarget.src = '/placeholder.svg'), (e.currentTarget.alt = 'Placeholder'))}
+          onError={(e) => ((e.currentTarget.src = 'placeholder.svg'), (e.currentTarget.alt = 'Placeholder'))}
         />
       </div>
     </div>
