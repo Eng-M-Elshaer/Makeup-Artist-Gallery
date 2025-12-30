@@ -1,0 +1,214 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #ffffff;
+    color: #171717;
+    line-height: 1.6;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #0a0a0a;
+        color: #ededed;
+    }
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+    padding-bottom: 6rem;
+}
+
+.header {
+    margin-bottom: 1.5rem;
+}
+
+.header h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+.header p {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+@media (prefers-color-scheme: dark) {
+    .header p {
+        color: #999;
+    }
+}
+
+.filters {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.filter-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    border: 1px solid #d1d5db;
+    background: white;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.filter-btn:hover {
+    background: #f3f4f6;
+}
+
+.filter-btn.active {
+    background: #171717;
+    color: white;
+    border-color: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+    .filter-btn {
+        background: #1f1f1f;
+        border-color: #374151;
+        color: #ededed;
+    }
+    
+    .filter-btn:hover {
+        background: #2a2a2a;
+    }
+    
+    .filter-btn.active {
+        background: #ededed;
+        color: #171717;
+    }
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+}
+
+@media (min-width: 640px) {
+    .gallery {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.gallery-item {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    background: #e5e7eb;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.2s;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+.gallery-item.loading {
+    background: #e5e7eb;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.whatsapp-btn {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    left: 1rem;
+    background: #25d366;
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem;
+    border-radius: 9999px;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+
+@media (min-width: 640px) {
+    .whatsapp-btn {
+        left: auto;
+        width: auto;
+        padding: 0.75rem 2rem;
+    }
+}
+
+.viewer {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+.viewer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    color: white;
+}
+
+.viewer-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.viewer-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 1rem;
+}
+
+.viewer-content img {
+    max-height: 85vh;
+    max-width: 100%;
+    object-fit: contain;
+    transition: transform 0.3s;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid white;
+    border-radius: 0.25rem;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+

@@ -7,8 +7,8 @@ const path = require('path');
 const ROOT = process.cwd();
 const GALLERY_ROOT = path.join(ROOT, 'docs', 'gallery');
 const OUTPUT = path.join(ROOT, 'docs', 'gallery-manifest.json');
-const ALLOWED_EXT = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.svg', '.heic']);
-const EXT_PRIORITY = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.svg', '.heic'];
+const ALLOWED_EXT = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.svg']);
+const EXT_PRIORITY = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.svg'];
 
 function listImagesIn(dir) {
   if (!fs.existsSync(dir)) return [];

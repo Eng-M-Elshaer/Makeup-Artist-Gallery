@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Makeup Artist Gallery
 
-## Getting Started
+معرض أعمال احترافي لفنانة المكياج - جاهز للنشر على GitHub Pages
 
-First, run the development server:
+## المميزات
+
+- ✅ معرض صور تفاعلي مع فئات (زفاف، خطوبة، كتب كتاب، سوارية)
+- ✅ عرض كامل الشاشة مع تكبير
+- ✅ حجز سريع عبر WhatsApp
+- ✅ جاهز للنشر على GitHub Pages
+- ✅ إضافة الصور تلقائيًا بدون تعديل الكود
+
+## كيفية إضافة الصور
+
+1. ضع الصور في المجلدات المناسبة داخل `docs/gallery/`:
+   - `docs/gallery/zafaf/` - صور الزفاف
+   - `docs/gallery/khotoba/` - صور الخطوبة
+   - `docs/gallery/ketb-ketab/` - صور كتب الكتاب
+   - `docs/gallery/sawariya/` - صور السوارية
+
+2. شغّل الأمر لتحديث manifest:
+   ```bash
+   npm run gen:manifest
+   ```
+
+3. الصور ستظهر تلقائيًا في المشروع!
+
+## التطوير المحلي
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+افتح [http://localhost:3000](http://localhost:3000) لرؤية النتيجة.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## البناء للنشر
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+الملفات الجاهزة ستكون في مجلد `out/`
 
-To learn more about Next.js, take a look at the following resources:
+## النشر على GitHub Pages
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+المشروع جاهز للنشر على GitHub Pages. عند الـ push إلى main، سيتم البناء والنشر تلقائيًا عبر GitHub Actions.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+الصور يجب أن تكون في `docs/gallery/` وستُنسخ تلقائيًا عند البناء.

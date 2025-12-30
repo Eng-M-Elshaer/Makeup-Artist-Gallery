@@ -1,156 +1,64 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>معرض أعمال ميكب أرتيست</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      /* فلتر غامق/فاتح بسيط */
-      :root { color-scheme: light dark; }
-    </style>
-  </head>
-  <body class="bg-white text-black dark:bg-black dark:text-zinc-50">
-    <main class="max-w-5xl mx-auto p-4 pb-24">
-      <header class="mb-4 flex items-center justify-between">
-        <div>
-          <h1 class="text-2xl font-bold">معرض أعمال</h1>
-          <p class="text-sm text-zinc-600 dark:text-zinc-400">اختاري الفئة وشاهدي الصور</p>
-        </div>
-      </header>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="container">
+        <header class="header">
+            <div>
+                <h1>معرض أعمال</h1>
+                <p>اختاري الفئة وشاهدي الصور</p>
+            </div>
+        </header>
 
-      <!-- فلتر الفئات -->
-      <div id="filters" class="flex gap-2 flex-wrap mb-4"></div>
-
-      <!-- شبكة الصور -->
-      <div id="grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
+        <section>
+            <div class="filters" id="filters"></div>
+            <div class="gallery" id="gallery"></div>
+        </section>
     </main>
 
-    <!-- زر واتساب ثابت -->
-    <a
-      href="https://wa.me/201100793335?text=%D9%85%D8%B1%D8%A8%D9%8B%D8%A7!%20%D8%B9%D8%A7%D9%8A%D8%B2%D8%A9%20%D8%A3%D8%AD%D8%AC%D8%B2%20%D9%85%D9%8A%D9%83%D8%A8%20%D9%84%D8%AA%D8%A7%D8%B1%D9%8A%D8%B9%20%D9%85%D8%AD%D8%DF%D8%DF%D8%8C%20%D9%85%D9%85%D9%83%D9%86%20%D8%A7%D9%84%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84%D8%9F"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="fixed bottom-4 inset-x-4 sm:inset-x-auto sm:right-4 sm:w-auto bg-green-600 text-white font-semibold py-3 rounded-full text-center shadow-lg"
-    >
-      احجزي الآن عبر واتساب
+    <a href="https://wa.me/201100793335?text=مرحبًا! عايزة أحجز ميكب لتاريخ محدد، ممكن التفاصيل؟" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="whatsapp-btn">
+        احجزي الآن عبر واتساب
     </a>
 
-    <script>
-      // بيانات الفئات والصور (استخدمي gallery/... تحت مجلد docs)
-      const categories = ['الكل', 'زفاف', 'خطوبة', 'سوارية', 'كتب كتاب'];
-      const arabicToFolder = { 'زفاف': 'zafaf', 'خطوبة': 'khotoba', 'سوارية': 'sawariya', 'كتب كتاب': 'ketb-ketab' };
-      let images = [];
+    <!-- Full Screen Viewer -->
+    <div class="viewer" id="viewer" style="display: none;">
+        <div class="viewer-header">
+            <button onclick="closeViewer()" class="btn">إغلاق</button>
+            <div class="viewer-controls">
+                <button onclick="prevImage()" class="btn">سابق</button>
+                <button onclick="nextImage()" class="btn">التالي</button>
+                <button onclick="toggleZoom()" class="btn" id="zoomBtn">تكبير</button>
+            </div>
+        </div>
+        <div class="viewer-content">
+            <img id="viewer-img" src="" alt="">
+        </div>
+    </div>
 
-      async function loadManifest() {
-        try {
-          const resp = await fetch('gallery-manifest.json');
-          if (!resp.ok) throw new Error('manifest not found');
-          const manifest = await resp.json();
-          images = [];
-          for (const [folder, files] of Object.entries(manifest)) {
-            const categoryArabic = Object.entries(arabicToFolder).find(([, f]) => f === folder)?.[0] || folder;
-            for (const src of files) {
-              images.push({ src, alt: `صورة ${categoryArabic}`, category: categoryArabic });
-            }
-          }
-        } catch (e) {
-          console.warn('لم يتم العثور على ملف المانيفست، سيتم إظهار عناصر فارغة حتى إضافة الصور.');
-          images = [];
-        } finally {
-          renderGrid();
-        }
-      }
-
-      let selected = 'الكل';
-
-      // بناء الفلاتر
-      const filtersEl = document.getElementById('filters');
-      categories.forEach((c) => {
-        const btn = document.createElement('button');
-        btn.textContent = c;
-        btn.className = 'px-3 py-1 rounded-full border text-sm';
-        btn.addEventListener('click', () => {
-          selected = c;
-          renderGrid();
-          renderFilters();
-        });
-        filtersEl.appendChild(btn);
-      });
-
-      function renderFilters() {
-        const btns = filtersEl.querySelectorAll('button');
-        btns.forEach((btn) => {
-          if (btn.textContent === selected) {
-            btn.className = 'px-3 py-1 rounded-full border text-sm bg-gray-900 text-white border-gray-900';
-          } else {
-            btn.className = 'px-3 py-1 rounded-full border text-sm bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700';
-          }
-        });
-      }
-
-      // بناء الشبكة
-      const gridEl = document.getElementById('grid');
-      function renderGrid() {
-        const list = selected === 'الكل' ? images : images.filter((i) => i.category === selected);
-        gridEl.innerHTML = '';
-        list.forEach((item) => {
-          const btn = document.createElement('button');
-          const wrap = document.createElement('div');
-          wrap.className = 'relative';
-          const skeleton = document.createElement('div');
-          skeleton.className = 'h-48 animate-pulse bg-gray-200 dark:bg-gray-700 rounded';
-          const img = document.createElement('img');
-          img.loading = 'lazy';
-          img.src = item.src;
-          img.alt = item.alt;
-          img.className = 'h-48 w-full object-cover rounded hidden';
-          img.onerror = () => { img.src = 'placeholder.svg'; img.classList.remove('hidden'); skeleton.remove(); };
-          img.onload = () => { img.classList.remove('hidden'); skeleton.remove(); };
-          wrap.appendChild(skeleton);
-          wrap.appendChild(img);
-          btn.appendChild(wrap);
-          btn.addEventListener('click', () => openViewer(list, list.indexOf(item)));
-          gridEl.appendChild(btn);
-        });
-      }
-
-      // عارض صورة بسيط فول سكرين
-      function openViewer(items, idx) {
-        const overlay = document.createElement('div');
-        overlay.className = 'fixed inset-0 bg-black/90 z-50 flex flex-col';
-        const bar = document.createElement('div');
-        bar.className = 'flex justify-between items-center p-3 text-white';
-        const closeBtn = document.createElement('button');
-        closeBtn.textContent = 'إغلاق';
-        closeBtn.className = 'px-3 py-1 border rounded';
-        closeBtn.onclick = () => document.body.removeChild(overlay);
-        const controls = document.createElement('div');
-        controls.className = 'flex gap-2';
-        const prev = document.createElement('button'); prev.textContent = 'سابق'; prev.className = 'px-3 py-1 border rounded';
-        const next = document.createElement('button'); next.textContent = 'التالي'; next.className = 'px-3 py-1 border rounded';
-        controls.appendChild(prev); controls.appendChild(next);
-        bar.appendChild(closeBtn); bar.appendChild(controls);
-        const stage = document.createElement('div'); stage.className = 'flex-1 flex items-center justify-center overflow-hidden';
-        const img = document.createElement('img'); img.className = 'max-h-[85vh] object-contain';
-        function show(i) {
-          idx = (i + items.length) % items.length;
-          img.src = items[idx].src;
-          img.alt = items[idx].alt;
-          img.onerror = () => { img.src = 'placeholder.svg'; };
-        }
-        prev.onclick = () => show(idx - 1);
-        next.onclick = () => show(idx + 1);
-        show(idx);
-        stage.appendChild(img);
-        overlay.appendChild(bar); overlay.appendChild(stage);
-        document.body.appendChild(overlay);
-      }
-
-      // أول رندر
-      renderFilters();
-      loadManifest();
-    </script>
-  </body>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <script id="gallery-manifest">window.GALLERY_MANIFEST = {"ketb-ketab":[],"khotoba":[],"sawariya":["gallery/sawariya/2025_12_20_16_55_IMG_0024.jpg","gallery/sawariya/2025_12_20_16_55_IMG_0025.jpg","gallery/sawariya/2025_12_20_16_55_IMG_0026.jpg","gallery/sawariya/2025_12_20_16_55_IMG_0027.jpg","gallery/sawariya/2025_12_21_22_10_IMG_0041.jpg","gallery/sawariya/2025_12_21_22_22_IMG_0042.jpg"],"zafaf":[]};</script>
+    <script src="app.js"></script>
+</body>
 </html>
+

@@ -17,11 +17,39 @@ export const PLACEHOLDER =
     </svg>`
   );
 
-// أمثلة صور للتجربة - استبدل لاحقًا بصورك الحقيقية تحت public/gallery
-export const images: ImageItem[] = [
-  { id: 'z1', src: 'gallery/zafaf/z1.webp', alt: 'لوك زفاف 1', category: 'زفاف', featured: true },
-  { id: 'z2', src: 'gallery/zafaf/z2.webp', alt: 'لوك زفاف 2', category: 'زفاف' },
-  { id: 'k1', src: 'gallery/khotoba/k1.webp', alt: 'لوك خطوبة 1', category: 'خطوبة', featured: true },
-  { id: 'kk1', src: 'gallery/ketb-ketab/kk1.webp', alt: 'لوك كتب كتاب 1', category: 'كتب كتاب' },
-  { id: 's1', src: 'gallery/sawariya/s1.webp', alt: 'لوك سوارية 1', category: 'سوارية' },
-];
+// قراءة الصور من manifest
+import manifestData from './gallery-manifest.json';
+
+const categoryMap: Record<string, Category> = {
+  'zafaf': 'زفاف',
+  'khotoba': 'خطوبة',
+  'ketb-ketab': 'كتب كتاب',
+  'sawariya': 'سوارية',
+};
+
+function generateImages(): ImageItem[] {
+  const images: ImageItem[] = [];
+  let idCounter = 0;
+
+  for (const [folderName, files] of Object.entries(manifestData)) {
+    const category = categoryMap[folderName];
+    if (!category) continue;
+
+    files.forEach((filePath, index) => {
+      const fileName = filePath.split('/').pop() || '';
+      const alt = `${category} - ${fileName.replace(/\.(jpg|jpeg|png|webp|svg)$/i, '')}`;
+      
+      images.push({
+        id: `${folderName}-${idCounter++}`,
+        src: `/${filePath}`,
+        alt,
+        category,
+        featured: index === 0, // أول صورة في كل فئة featured
+      });
+    });
+  }
+
+  return images;
+}
+
+export const images: ImageItem[] = generateImages();

@@ -25,9 +25,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Convert gallery images to JPG
-        run: npm run convert:jpg
-
       - name: Generate gallery manifest
         run: npm run gen:manifest
 

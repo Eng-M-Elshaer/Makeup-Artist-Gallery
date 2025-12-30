@@ -1,6 +1,6 @@
 @echo off
 setlocal
-Title Prepare docs (convert to JPG + manifest)
+Title Prepare Gallery (Generate Manifest)
 
 REM Move to project root (script directory)
 PUSHD "%~dp0"
@@ -12,26 +12,30 @@ if not exist "package.json" (
   exit /b 1
 )
 
-echo [1/3] Installing dependencies...
+echo [1/2] Installing dependencies...
 call npm install
 if errorlevel 1 goto :error
 
-echo [2/3] Converting gallery images to JPG...
-call npm run convert:jpg
-if errorlevel 1 goto :error
-
-echo [3/3] Generating gallery manifest...
+echo [2/3] Generating gallery manifest from docs/gallery...
 call npm run gen:manifest
 if errorlevel 1 goto :error
 
+echo [3/3] Embedding manifest in index.html...
+call npm run embed:manifest
+if errorlevel 1 goto :error
+
 echo.
-echo [Done] Everything completed successfully.
+echo [Optional] Cleaning up HEIC files (delete if JPG exists)...
+call npm run cleanup:heic
+
 echo.
-echo Optional: start local preview server at http://localhost:5500
-set /p startServer="Start server now? (y/N): "
-if /I "%startServer%"=="Y" (
-  npx --yes serve -s docs -l 5500
-)
+echo [Done] Gallery ready!
+echo.
+echo You can now:
+echo   - Open docs\index.html directly in your browser (no server needed!)
+echo   - Or use: npx serve docs -l 3000
+echo   - Add more images to docs\gallery\ and run this script again
+echo.
 
 POPD
 exit /b 0

@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "build:gh": "set GITHUB_PAGES=true&& next build",
+    "build": "next build && node scripts/copy-gallery-to-out.js",
+    "build:gh": "set GITHUB_PAGES=true&& next build && node scripts/copy-gallery-to-out.js",
     "start": "next start",
     "lint": "eslint",
     "gen:manifest": "node scripts/gen-gallery-manifest.js",
-    "convert:jpg": "node scripts/convert-gallery-to-jpg.js",
-    "prepare:docs": "npm run convert:jpg && npm run gen:manifest"
+    "embed:manifest": "node scripts/embed-manifest.js",
+    "cleanup:heic": "node scripts/convert-heic-to-jpg.js",
+    "prepare": "npm run gen:manifest && npm run embed:manifest"
   },
   "dependencies": {
     "next": "16.1.1",
